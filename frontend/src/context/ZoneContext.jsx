@@ -25,6 +25,7 @@ export const ZoneProvider = ({ children }) => {
         [data.zone]: {
           riskLevel: data.risk,   // LOW MODERATE HIGH
           people: data.people,
+          garbage: data.garbage,
         },
       }));
 
