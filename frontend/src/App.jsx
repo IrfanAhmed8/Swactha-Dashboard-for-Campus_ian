@@ -39,7 +39,7 @@ function App() {
       <header className="header">
         <div>
           <h1>🛰 Smart Swachhta Dashboard</h1>
-          <p>AI Powered Campus Cleanliness Monitoring</p>
+          <p>For Campus Cleanliness Monitoring</p>
         </div>
 
         <div className="live">
@@ -79,7 +79,9 @@ Campus Live Monitoring
 
           <div className="stat">
             <span>📊 Campus Cleanliness</span>
-            <h2>{cleanlinessScore}%</h2>
+            {/*}
+            <h2>{cleanlinessScore}%</h2>*/}
+            <h5>--Under Process --</h5>
           </div>
 
           <div className="stat highlight">

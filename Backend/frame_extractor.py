@@ -3,7 +3,7 @@ import cv2
 import time
 import asyncio
 
-VIDEO_PATH = "test_video.mp4"
+VIDEO_PATH = "test1.mp4"
 FRAME_INTERVAL = 5  # seconds
 
 async def frame_generator(queue):

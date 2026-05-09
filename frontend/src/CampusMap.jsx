@@ -7,7 +7,7 @@ const CampusMap = ({ onZoneClick }) => {
   MODERATE: "#FFC107",
   HIGH: "#F44336",
 };
-
+//give a pointer on hover on the cctv zone
 
   return (
     <svg
@@ -281,6 +281,8 @@ display:"block"
     height="100"
     rx="80"
     ry="80"
+    //pointer cursor on hover
+    style={{ cursor: "pointer" }}
     fill={riskColors[zones?.cctv_zone?.riskLevel] || "#d85711"}
     opacity="0.42"
     filter="url(#softGlow)"

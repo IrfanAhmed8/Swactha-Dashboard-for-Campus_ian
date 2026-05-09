@@ -15,4 +15,4 @@ def detect_people(frame):
 
     people_count = len(results[0].boxes)
 
-    return people_count, results[0].plot()
+    return people_count, frame

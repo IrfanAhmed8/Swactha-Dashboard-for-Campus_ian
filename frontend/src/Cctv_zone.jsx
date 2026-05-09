@@ -80,7 +80,8 @@ function Cctv_zone() {
 
           <div className="stat">
             <span>📊 Cleanliness Score</span>
-            <h2>{cleanlinessScore}%</h2>
+            {/* <h2>{cleanlinessScore}%</h2> */}
+            <h5>--Under Process --</h5>
           </div>
 
         </div>

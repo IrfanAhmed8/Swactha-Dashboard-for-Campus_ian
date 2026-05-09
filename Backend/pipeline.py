@@ -26,18 +26,18 @@ async def processor(queue):
 
         frame = await queue.get()
 
-        people_count, people_frame = detect_people(frame)
-        garbage_count, garbage_frame = detect_garbage(frame)
+        people_count, frame = detect_people(frame)
+        garbage_count, frame = detect_garbage(frame)
 
-        _, buffer = cv2.imencode(".jpg", people_frame)
+        _, buffer = cv2.imencode(".jpg", frame)
         frame_base64 = base64.b64encode(buffer).decode()
         risk=get_risk_level(people_count)
         payload = {
             "zone": "cctv_zone",
             "people": people_count,
-            "garbage": 10,
+            "garbage": garbage_count,
             "frame": frame_base64,
-            "risk": risk
+            "risk": risk,
         }
 
         requests.post("http://localhost:8000/update-zone", json=payload)
