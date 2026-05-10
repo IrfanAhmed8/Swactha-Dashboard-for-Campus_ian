@@ -3,10 +3,13 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useZones } from "./context/ZoneContext";
 import "./App.css";
+import { exportToExcel, exportToPDF } from "./utils/exportReport";
 
 function App() {
   const navigate = useNavigate();
-  const { zones } = useZones();
+
+  // ✅ IMPORTANT FIX: added history
+  const { zones, history } = useZones();
 
   const handleZoneClick = (zone) => {
     if (zone === "cctv_zone") {
@@ -27,10 +30,10 @@ function App() {
   const totalZones = zoneList.length;
 
   const cleanestZone =
-  zoneList.sort((a,b)=> (a[1]?.garbage||0)-(b[1]?.garbage||0))[0]?.[0];
+    zoneList.sort((a, b) => (a[1]?.garbage || 0) - (b[1]?.garbage || 0))[0]?.[0];
 
   const dirtiestZone =
-  zoneList.sort((a,b)=> (b[1]?.garbage||0)-(a[1]?.garbage||0))[0]?.[0];
+    zoneList.sort((a, b) => (b[1]?.garbage || 0) - (a[1]?.garbage || 0))[0]?.[0];
 
   return (
     <div className="dashboard">
@@ -42,9 +45,34 @@ function App() {
           <p>For Campus Cleanliness Monitoring</p>
         </div>
 
-        <div className="live">
-          <span className="live-dot"></span>
-          LIVE
+        {/* LIVE + BUTTONS */}
+        <div className="live-container">
+
+          <div className="live">
+            <span className="live-dot"></span>
+            LIVE
+          </div>
+
+          <div className="live-actions">
+
+            <button
+              className="live-btn excel"
+              onClick={() => exportToExcel(history)}   // ✅ FIXED
+              title="Export Excel"
+            >
+              📊 Excel
+            </button>
+
+            <button
+              className="live-btn pdf"
+              onClick={() => exportToPDF(history)}     // ✅ FIXED
+              title="Export PDF"
+            >
+              📄 PDF
+            </button>
+
+          </div>
+
         </div>
       </header>
 
@@ -54,8 +82,8 @@ function App() {
         {/* MAP */}
         <div className="card map-card">
           <div className="map-title">
-Campus Live Monitoring
-</div>
+            Campus Live Monitoring
+          </div>
           <CampusMap onZoneClick={handleZoneClick} />
         </div>
 
@@ -78,25 +106,30 @@ Campus Live Monitoring
           </div>
 
           <div className="stat">
-            <span>📊 Campus Cleanliness</span>
-            {/*}
-            <h2>{cleanlinessScore}%</h2>*/}
-            <h5>--Under Process --</h5>
+            <h2>📊 Campus Cleanliness: {cleanlinessScore}%</h2>
+
+            <p className="score-text">
+              {cleanlinessScore > 75
+                ? "🟢 Campus is Clean and Well Maintained"
+                : cleanlinessScore > 50
+                ? "🟡 Moderate Cleanliness - Needs Monitoring"
+                : "🔴 Dirty Zones Detected - Immediate Action Required"}
+            </p>
           </div>
 
           <div className="stat highlight">
-          <span>📍 Total Zones</span>
-          <h2>{totalZones}</h2>
+            <span>📍 Total Zones</span>
+            <h2>{totalZones}</h2>
           </div>
 
           <div className="stat highlight">
-          <span>✨ Cleanest Zone</span>
-          <h2>{cleanestZone || "--"}</h2>
+            <span>✨ Cleanest Zone</span>
+            <h2>{cleanestZone || "--"}</h2>
           </div>
 
           <div className="stat highlight">
-          <span>🧹 Dirtiest Zone</span>
-          <h2>{dirtiestZone || "--"}</h2>
+            <span>🧹 Dirtiest Zone</span>
+            <h2>{dirtiestZone || "--"}</h2>
           </div>
 
         </div>
@@ -105,4 +138,5 @@ Campus Live Monitoring
     </div>
   );
 }
+
 export default App;
