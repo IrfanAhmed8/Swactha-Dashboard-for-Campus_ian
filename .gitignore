@@ -1,0 +1,5 @@
+#ignore all mp4 files
+*.mp4
+_pycache__/
+.vscode/
+node_modules/

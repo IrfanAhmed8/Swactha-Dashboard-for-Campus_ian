@@ -30,7 +30,7 @@ async def websocket_endpoint(websocket: WebSocket):
 @app.post("/update-zone")
 async def update_zone(data: dict):
     #only print zone and risk for now, can print more later
-    print(f" Received from detector: Zone={data['zone']}, Risk={data['risk']}, People={data['people']}")
+    print(f" Received from detector: Zone={data['zone']}, Risk={data['risk']}, People={data['people']},garbage={data['garbage']}")
    
 
     for client in clients:

@@ -7,24 +7,26 @@ const CampusMap = ({ onZoneClick }) => {
   MODERATE: "#FFC107",
   HIGH: "#F44336",
 };
+//give a pointer on hover on the cctv zone
 
   return (
     <svg
   viewBox="0 0 794.9834 809.13501"
   preserveAspectRatio="xMidYMid meet"
-  width="100%"
-  height="100%"
+  
   style={{
-    background: "#f5f5f5",
-    borderRadius: "12px",
-    display: "block"
-  }}
+height:"100%",
+maxHeight:"500px",
+width:"100%",
+borderRadius:"12px",
+display:"block"
+}}
 >
 
   <defs>
-    <filter id="softGlow" x="-0.07" y="-0.19" width="1.14" height="1.38">
-      <feGaussianBlur stdDeviation="8" />
-    </filter>
+    <filter id="softGlow">
+<feGaussianBlur stdDeviation="12"/>
+  </filter>
   </defs>
 
   {/* ===== Top Building ===== */}
@@ -279,7 +281,9 @@ const CampusMap = ({ onZoneClick }) => {
     height="100"
     rx="80"
     ry="80"
-    fill={riskColors[zones?.cctv_zone?.risk] || "#d85711"}
+    //pointer cursor on hover
+    style={{ cursor: "pointer" }}
+    fill={riskColors[zones?.cctv_zone?.riskLevel] || "#d85711"}
     opacity="0.42"
     filter="url(#softGlow)"
     onClick={() => onZoneClick("cctv_zone",zones)}
