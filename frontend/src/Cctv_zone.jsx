@@ -4,6 +4,7 @@ import ZoneRiskGraph from "./ZoneRiskGraph.jsx";
 import RiskAnalysis from "./RiskAnalysis.jsx";
 import LineGraph from "./LineGraph.jsx";
 import "./style/Cctv_zone.css";
+import AnalyticsGraph from "./components/AnalyticsGraph.jsx";
 
 function Cctv_zone() {
 
@@ -17,18 +18,19 @@ function Cctv_zone() {
     value: entry.riskLevel === "LOW" ? 1 : entry.riskLevel === "MODERATE" ? 2 : 3
   }));
 
-  const riskColors = {
-    LOW: "#22c55e",
-    MODERATE: "#facc15",
-    HIGH: "#ef4444"
-  };
+  const cleanlinessColors = {
+  "Dark Green": "#22c55e",
+  "Light Green": "#4ade80",
+  "Yellow": "#facc15",
+  "Orange": "#fb923c",
+  "Red": "#ef4444",
+  "Dark Red": "#991b1b",
+};
 
-  const cleanlinessScore = Math.max(
-    0,
-    100 - ((zone?.garbage || 0) * 10 + (zone?.people || 0) * 2)
-  );
+  const cleanlinessScore = zone?.cleanlinessScore || 0;
 
   return (
+    
     <div className="dashboard">
 
       {/* 🔔 GLOBAL NOTIFICATIONS UI (ONLY ADDITION) */}
@@ -100,9 +102,16 @@ function Cctv_zone() {
 
           <div className="stat">
             <span>⚠ Risk Level</span>
-            <h2 style={{ color: riskColors[zone?.riskLevel] }}>
-              {zone?.riskLevel || "--"}
-            </h2>
+            <h2
+  style={{
+    color:
+      cleanlinessColors[
+        zone?.cleanlinessColor
+      ] || "#fff"
+  }}
+>
+  {zone?.cleanlinessLabel || "--"}
+</h2>
           </div>
 
           <div className="stat clean-score-box">
@@ -145,28 +154,16 @@ function Cctv_zone() {
       {/* GRAPHS */}
       <div className="graph-grid">
 
-        <div className="card">
-          <h3>Risk Timeline</h3>
-          <ZoneRiskGraph data={zoneHistory} />
-        </div>
+        
+      <AnalyticsGraph />
 
-        <div className="card">
-          <h3>Risk Trend</h3>
-          {lineGraphData.length > 0 && (
-            <LineGraph data={lineGraphData} />
-          )}
-        </div>
+<ZoneRiskGraph />
 
+<RiskAnalysis />
       </div>
 
-      {/* AI ANALYSIS */}
-      <div className="card analysis-card">
-        <h3>AI Cleanliness Analysis</h3>
-        <RiskAnalysis
-          riskLevel={zone?.riskLevel}
-          people={zone?.people}
-        />
-      </div>
+     
+      
 
     </div>
   );

@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useZones } from "./context/ZoneContext.jsx";
 const CampusMap = ({ onZoneClick }) => {
   const {zones}=useZones();
-  const riskColors = {
-  LOW: "#4CAF50",
-  MODERATE: "#FFC107",
-  HIGH: "#F44336",
+  const cleanlinessColors = {
+  "Dark Green": "#1B5E20",
+  "Light Green": "#4CAF50",
+  "Yellow": "#FBC02D",
+  "Orange": "#FB8C00",
+  "Red": "#E53935",
+  "Dark Red": "#8B0000",
 };
 //give a pointer on hover on the cctv zone
 
@@ -283,7 +286,9 @@ display:"block"
     ry="80"
     //pointer cursor on hover
     style={{ cursor: "pointer" }}
-    fill={riskColors[zones?.cctv_zone?.riskLevel] || "#d85711"}
+    fill={cleanlinessColors[
+    zones?.cctv_zone?.cleanlinessColor
+  ] || "#9E9E9E"}
     opacity="0.42"
     filter="url(#softGlow)"
     onClick={() => onZoneClick("cctv_zone",zones)}

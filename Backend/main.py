@@ -1,6 +1,6 @@
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
-
+import pandas as pd
 app = FastAPI()
 
 app.add_middleware(
@@ -37,3 +37,10 @@ async def update_zone(data: dict):
         await client.send_json(data)
 
     return {"status": "ok"}
+
+@app.get("/analytics")
+def get_analytics():
+
+    df = pd.read_csv("zone_logs.csv")
+
+    return df.tail(50).to_dict(orient="records")

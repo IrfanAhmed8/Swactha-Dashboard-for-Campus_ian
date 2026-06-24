@@ -19,21 +19,53 @@ function App() {
 
   const zoneList = Object.entries(zones || {});
 
-  const peopleTotal = zoneList.reduce((sum, z) => sum + (z[1]?.people || 0), 0);
-  const garbageTotal = zoneList.reduce((sum, z) => sum + (z[1]?.garbage || 0), 0);
+  const peopleTotal = zoneList.reduce(
+  (sum, z) => sum + (z[1]?.people || 0),
+  0
+);
 
-  const dirtyZones = zoneList.filter(z => z[1]?.riskLevel === "HIGH").length;
+const garbageTotal = zoneList.reduce(
+  (sum, z) => sum + (z[1]?.garbage || 0),
+  0
+);
 
-  const cleanlinessScore =
-    Math.max(0, 100 - (garbageTotal * 3 + peopleTotal * 0.5)).toFixed(0);
+const dirtyZones = zoneList.filter(
+  z => z[1]?.cleanlinessScore < 50
+).length;
 
-  const totalZones = zoneList.length;
+const totalZones = zoneList.length;
 
-  const cleanestZone =
-    zoneList.sort((a, b) => (a[1]?.garbage || 0) - (b[1]?.garbage || 0))[0]?.[0];
+const avgCleanliness =
+  totalZones > 0
+    ? (
+        zoneList.reduce(
+          (sum, z) => sum + (z[1]?.cleanlinessScore || 0),
+          0
+        ) / totalZones
+      ).toFixed(0)
+    : 100;
 
-  const dirtiestZone =
-    zoneList.sort((a, b) => (b[1]?.garbage || 0) - (a[1]?.garbage || 0))[0]?.[0];
+const cleanestZone =
+  [...zoneList].sort(
+    (a, b) =>
+      (b[1]?.cleanlinessScore || 0) -
+      (a[1]?.cleanlinessScore || 0)
+  )[0]?.[0];
+
+const dirtiestZone =
+  [...zoneList].sort(
+    (a, b) =>
+      (a[1]?.cleanlinessScore || 0) -
+      (b[1]?.cleanlinessScore || 0)
+  )[0]?.[0];
+  const zoneLegend = [
+  { label: "Very Clean", color: "#1B5E20" },
+  { label: "Clean", color: "#4CAF50" },
+  { label: "Slightly Dirty", color: "#FBC02D" },
+  { label: "Moderate Risk", color: "#FB8C00" },
+  { label: "Dirty", color: "#E53935" },
+  { label: "Critical", color: "#8B0000" },
+];
 
   return (
     <div className="dashboard">
@@ -80,12 +112,44 @@ function App() {
       <main className="main-grid">
 
         {/* MAP */}
-        <div className="card map-card">
-          <div className="map-title">
-            Campus Live Monitoring
-          </div>
-          <CampusMap onZoneClick={handleZoneClick} />
+        {/* MAP */}
+<div className="card map-card">
+
+  <div className="map-title">
+    Campus Live Monitoring
+  </div>
+
+  <div className="map-layout">
+
+    {/* LEFT SIDE LEGEND */}
+    <div className="map-legend">
+
+      <h3>Zone Status</h3>
+
+      {zoneLegend.map((zone) => (
+        <div key={zone.label} className="legend-item">
+
+          <span
+            className="legend-color"
+            style={{ backgroundColor: zone.color }}
+          ></span>
+
+          <span className="legend-label">
+            {zone.label}
+          </span>
+
         </div>
+      ))}
+
+    </div>
+
+    {/* RIGHT SIDE MAP */}
+    <div className="map-container">
+      <CampusMap onZoneClick={handleZoneClick} />
+    </div>
+
+  </div>
+</div>
 
         {/* STATS */}
         <div className="card stats-card">
@@ -106,12 +170,12 @@ function App() {
           </div>
 
           <div className="stat">
-            <h2>📊 Campus Cleanliness: {cleanlinessScore}%</h2>
+            <h2>📊 Campus Cleanliness: {avgCleanliness}%</h2>
 
             <p className="score-text">
-              {cleanlinessScore > 75
+              {avgCleanliness > 75
                 ? "🟢 Campus is Clean and Well Maintained"
-                : cleanlinessScore > 50
+                : avgCleanliness > 50
                 ? "🟡 Moderate Cleanliness - Needs Monitoring"
                 : "🔴 Dirty Zones Detected - Immediate Action Required"}
             </p>

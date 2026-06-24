@@ -1,7 +1,7 @@
 from ultralytics import YOLO
 import cv2
 
-model = YOLO("yoloproject/yoloproject/best.pt")
+model = YOLO("yoloproject/yoloproject/best (1).pt")
 
 def detect_garbage(frame):
 
