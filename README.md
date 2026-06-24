@@ -30,6 +30,8 @@ The system tracks:
 
 ## Architecture & Workflow
 
+
+![Architecture Diagram](docs/Architecture.png)
 ```mermaid
 flowchart TD
   A[CCTV Feed / Video Source] --> B[Frame Extraction]
