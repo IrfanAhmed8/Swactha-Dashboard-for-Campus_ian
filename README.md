@@ -32,22 +32,6 @@ The system tracks:
 
 
 ![Architecture Diagram](docs/Architecture.png)
-```mermaid
-flowchart TD
-  A[CCTV Feed / Video Source] --> B[Frame Extraction]
-  B --> C[People Detection (YOLOv8n)]
-  B --> D[Garbage Detection (Custom YOLOv8)]
-  C --> E[Risk Level Computation]
-  D --> F[Garbage Count]
-  E --> G[Cleanliness Score Calculation]
-  F --> G
-  G --> H[CSV Storage & Analytics]
-  G --> I[Alert Service]
-  H --> J[FastAPI Analytics Endpoint]
-  J --> K[React Dashboard]
-  I --> L[Email Notification]
-  J --> K
-```
 
 ## Implementation Summary
 
